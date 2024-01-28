@@ -1,0 +1,149 @@
+#This project uses the following database I created using actual data from my petsitting jobs
+
+CREATE DATABASE petsitting;
+USE petsitting;
+CREATE TABLE pet_parents (
+	id INT,
+	name VARCHAR(45),
+    location VARCHAR(45)
+);
+
+INSERT INTO pet_parents (id, name, location)
+VALUES (1, 'Meg', 'Morrisville'),
+(2, 'Ryan', 'Raleigh'),
+(3, 'Brigette', 'Raleigh'),
+(4, 'Ashton', 'Raleigh'),
+(5, 'Aimee', 'Holly Springs'),
+(6, 'Ashley', 'Raleigh'),
+(7, 'Maggie', 'Raleigh'),
+(8, 'Sarah', 'Raleigh'),
+(9, 'Elena', 'Raleigh'),
+(10, 'Meagan', 'Raleigh'),
+(11, 'Michael', 'Durham'),
+(12, 'Lindsay', 'Durham'),
+(13, 'Chris', 'Durham'),
+(14, 'Dori', 'Durham'),
+(15, 'Noelle', 'Durham'),
+(16, 'Kelsea', 'Sanford'),
+(17, 'Amy', 'Durham'),
+(18, 'Kati', 'Durham'),
+(19, 'Ryan', 'Raleigh'),
+(20, 'David', 'Raleigh'),
+(21, 'Vicki', 'Raleigh');
+(22, 'Cammie', 'Durham');
+(23, 'Emily', 'Carrboro'),
+(24, 'Delaney', 'Durham'),
+(25, 'Regina', 'Durham'),
+(26, 'Jacob', 'Durham')
+(27, 'Kathy', 'Durham')
+(28, 'Raquel', 'Raleigh');
+
+USE petsitting;
+CREATE TABLE pets (
+	id INT PRIMARY KEY,
+    name VARCHAR(45),
+    type VARCHAR(45),
+    breed VARCHAR(45),
+    parent_id INT);
+    
+INSERT INTO pets (id, name, type, breed, parent_id)
+VALUES (1, 'Nowh', 'dog', 'dachshund', 1),
+(2, 'Winston', 'dog', 'pit mix', 2),
+(3, 'Franklin', 'dog', 'terrier mix', 2),
+(4, 'Sam', 'dog', 'american foxhound', 3),
+(5, 'Tilda', 'dog', 'corgi mix', 3),
+(6, 'Lilly', 'dog', 'shih tzu mix', 4),
+(7, 'Oliver', 'dog', 'chihuahua mix', 4),
+(8, 'Bug', 'cat', 'american shorthair', 5),
+(9, 'Echo', 'dog', 'australian cattle dog', 5),
+(10, 'Puggy', 'dog', 'pug', 5),
+(11, 'Baxter', 'dog', 'labrador retreiver', 6),
+(12, 'Gumbo', 'cat', 'american shorthair', 7),
+(13, 'Eli', 'dog', NULL, 8),
+(14, 'Maxson', 'dog', 'doodle mix', 8),
+(15, 'Scout', 'cat', 'american longhair', 8),
+(16, 'Twinkles', 'rabbit', NULL, 8),
+(17, 'Piper', 'dog', 'labrador retriever', 9),
+(18, 'Poppy', 'dog', 'australian cattle dog', 9),
+(19, 'Bandon', 'dog', 'bernedoodle', 10),
+(20, 'Josie', 'dog', NULL, 11),
+(21, 'Pike', 'dog', NULL, 11),
+(22, 'Lulu', 'dog', 'husky/pug mix', 12),
+(23, 'Marty', 'dog', 'minature pinscher/husky mix', 12),
+(24, 'Elle', 'dog', 'corgi', 13),
+(25, 'Pompeii', 'cat', 'american shorthair', 13),
+(26, 'Bailey', 'dog', 'labrador retreiver/sheepdog mix', 14),
+(27, 'Chancho', 'dog', 'chihuahua/dachshund mix', 14),
+(28, 'Frank', 'dog', 'husky/australian cattle dog mix', 14),
+(29, 'Clara', 'dog', 'yorkshire terrier', 15),
+(30, 'Rose', 'dog', 'yorkshire terrier', 15),
+(31, 'Moose', 'dog', 'terrier mix', 16),
+(32, 'Bunny', 'cat', 'american shorthair', 16),
+(33, 'Sophie', 'cat', 'american shorthair', 17),
+(34, 'Jade', 'cat', 'american shorthair', 18),
+(35, 'Ghost', 'dog', 'labrador retreiver/border collie mix', 19),
+(36, 'Jacques', 'dog', 'plott hound mix', 20),
+(37, 'Madelina', 'cat', 'american shorthair', 20),
+(38, 'Gloria', 'cat', 'american shorthair', 21),
+(39, 'Princess', 'cat', 'american shorthair', 21),
+(40, 'Gus', 'dog', 'havanese', 22),
+(41, 'Maggie', 'dog', 'labradoodle', 22),
+(42, 'Belle', 'dog', 'labrador retreiver mix', 23),
+(43, 'Dandi', 'dog', 'chihuahua', 24),
+(44, 'Dublin', 'dog', 'yorkshire terrier/poodle mix', 24),
+(45, 'Charlie', 'dog', 'pit bull', 25),
+(46, 'Cassie', 'dog', 'german shephard', 26)
+(47, 'Freya', 'dog', 'german shepard', 27)
+(48, 'Bastila', 'cat', 'american shorthair', 28);
+
+#Find the name, breed, and location for all dogs who have a breed listed
+
+SELECT p.name, p.breed, pp.location
+FROM pets p
+JOIN pet_parents pp
+ON p.parent_id=pp.id
+WHERE p.type = 'dog'
+AND p.breed IS NOT NULL
+ORDER BY pp.location ASC;
+
+#Count how many pets do not have a breed listed
+
+SELECT COUNT(*) AS no_breed
+FROM pets
+WHERE breed IS NULL;
+
+#Find name, breed, type, parent name, and location for the pets of Amy and Kelsea
+
+SELECT
+	p.id,
+    p.name AS pet_name,
+    p.type,
+    p.breed,
+    pp.name AS parent_name,
+    pp.location
+FROM pets p
+JOIN pet_parents pp
+ON p.parent_id = pp.id
+WHERE pp.name IN ('Kelsea', 'Amy');
+
+#Find the information of all animals in the pets table that are some sort of terrier
+
+SELECT *
+FROM pets
+WHERE breed LIKE '%terrier%';
+
+#Find the name, type of pet, and location for all pets that are not dogs
+
+SELECT p.name, p.type, pp.location
+FROM pets p
+JOIN pet_parents pp
+ON p.parent_id=pp.id
+WHERE p.type != 'dog';
+
+#Find the number of pets watched in Raleigh
+
+SELECT COUNT(*)
+FROM pets p
+JOIN pet_parents pp
+ON p.parent_id=pp.id
+WHERE pp.location = 'Raleigh';
