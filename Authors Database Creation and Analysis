@@ -17,7 +17,12 @@ VALUES ("Virginia Woolf", 1882, "British"),
 ("Carson McCullers", 1917, "American"),
 ("Gabriel Garcia Marquez", 1927, "Colombian / Mexican"),
 ("John Irving", 1942, "American / Canadian"),
-("Victor Hugo", 1802, "French");
+("Victor Hugo", 1802, "French"),
+("Charlotte Bronte", 1816, "British"),
+("Zadie Smith", 1975, "British"),
+("Dan Brown", 1964, "American"),
+("Stieg Larsson", 1954, "Swedish");
+
 
 CREATE TABLE books (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,7 +67,17 @@ VALUES
 ("Until I Find You", 2005, 10),
 ("Les Miserables", 1862, 11),
 ("The Hunchback of Notre-Dame", 1831, 11),
-("The Last Day of a Condemned Man", 1829, 11);
+("The Last Day of a Condemned Man", 1829, 11),
+("Jane Eyre", 1847, 12),
+("Shirley", 1849, 12),
+("White Teeth", 2000, 13),
+("Swing Time", 2016, 13),
+("The Da Vinci Code", 2003, 14),
+("Angels and Demons", 2000, 14),
+("Digital Fortress", 1998, 14),
+("The Girl with the Dragon Tattoo", 2005, 15),
+("The Girl who Played with Fire", 2006, 15),
+("The Girl who Kicked the Hornet's Nest", 2007, 15);
 
 #Find the author name, book title, and publishing year of all books, first in order of the author's birth year, then by the publishing year of the book
 SELECT a.name, b.title, b.publishing_year
