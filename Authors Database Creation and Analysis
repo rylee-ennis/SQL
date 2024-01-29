@@ -1,0 +1,103 @@
+#This analysis uses the following database I created of authors and examples of their published works:
+
+CREATE TABLE authors (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT,
+birth_year INTEGER,
+nationality TEXT);
+
+INSERT INTO authors (name, birth_year, nationality)
+VALUES ("Virginia Woolf", 1882, "British"),
+("Judy Blume", 1938, "American"),
+("Mary Shelley", 1797, "British"),
+("Kurt Vonnegut", 1922, "American"),
+("James Joyce", 1882, "Irish"),
+("Jane Austen", 1775, "British"),
+("Jack Kerouac", 1922, "American"),
+("Carson McCullers", 1917, "American"),
+("Gabriel Garcia Marquez", 1927, "Colombian / Mexican"),
+("John Irving", 1942, "American / Canadian"),
+("Victor Hugo", 1802, "French");
+
+CREATE TABLE books (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+title TEXT,
+publishing_year INTEGER,
+author_id INTEGER);
+
+INSERT INTO books (title, publishing_year, author_id)
+VALUES 
+("Mrs Dalloway", 1925, 1),
+("A Room Of One's Own", 1929, 1),
+("Orlando", 1928, 1),
+("Are You There God, It's Me Margaret", 1970, 2),
+("Superfudge", 1980, 2),
+("Forever", 1975, 2),
+("Tiger Eyes", 1981, 2),
+("Deenie", 1973, 2),
+("Frankenstein", 1818, 3),
+("Slaughterhouse Five", 1969, 4),
+("Cat's Cradle", 1963, 4),
+("The Sirens of Titan", 1959, 4),
+("Breakfast of Champions", 1973, 4),
+("Ulysses", 1920, 5),
+("Dubliners", 1914, 5),
+("Finnegans Wake", 1939, 5),
+("A Portrait of the Artist As a Young Man", 1916, 5),
+("Pride and Predjudice", 1813, 6),
+("Emma", 1815, 6),
+("Sense and Sensibility", 1811, 6),
+("Persuasion", 1817, 6),
+("On the Road", 1957, 7),
+("The Dharma Bums", 1958, 7),
+("Big Sur", 1962, 7),
+("The Heart is a Lonely Hunter", 1940, 8),
+("The Ballad of the Sad Cafe", 1951, 8),
+("One Hundred Years of Solitude", 1967, 9),
+("Love in the Time of Cholera", 1985, 9),
+("The World According to Garp", 1978, 10),
+("A Prayer for Owen Meany", 1989, 10),
+("The Cider House Rules", 1985, 10),
+("A Widow for One Year", 1998, 10),
+("Until I Find You", 2005, 10),
+("Les Miserables", 1862, 11),
+("The Hunchback of Notre-Dame", 1831, 11),
+("The Last Day of a Condemned Man", 1829, 11);
+
+#Find the author name, book title, and publishing year of all books, first in order of the author's birth year, then by the publishing year of the book
+SELECT a.name, b.title, b.publishing_year
+FROM authors a
+JOIN books b
+ON a.id=b.author_id
+ORDER BY a.birth_year, b.publishing_year;
+
+#Find the book title, author name, and publishign year of all books by authors born before 1900
+SELECT b.title, a.name, b.publishing_year
+FROM books b
+JOIN authors a
+ON b.author_id=a.id
+WHERE a.birth_year < 1900
+ORDER BY b.publishing_year;
+
+#Find the author name and book titles of all authors whose names start with a J, put in alphabetical order
+SELECT a.name, b.title
+FROM authors a
+JOIN books b
+ON a.id=b.author_id
+WHERE a.name LIKE "J%"
+ORDER BY a.name;
+
+#Find the average publishing year as a whole number for each author (based on books in the table, not all published books)
+SELECT a.name, ROUND(AVG(b.publishing_year)) AS Avg_Pub_Year
+FROM authors a
+JOIN books b
+ON a.id=b.author_id
+GROUP BY a.name
+ORDER BY b.publishing_year;
+
+#Find the author name and books titles for all authors who are not solely American
+SELECT a.name, b.title
+FROM authors a
+JOIN books b
+ON a.id=b.author_id
+WHERE a.nationality != "American";
